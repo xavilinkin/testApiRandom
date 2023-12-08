@@ -1,4 +1,4 @@
-package com.xavi.testapirandom
+package com.xavi.testapirandom.ui.view.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

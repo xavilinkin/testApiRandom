@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listRandomFragment"
-        android:name="com.xavi.testapirandom.ListRandomFragment"
+        android:name="com.xavi.testapirandom.ui.view.fragments.ListRandomFragment"
         android:label="fragment_list_random"
         tools:layout="@layout/fragment_list_random" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/detailRandomFragment"
-        android:name="com.xavi.testapirandom.DetailRandomFragment"
+        android:name="com.xavi.testapirandom.ui.view.fragments.DetailRandomFragment"
         android:label="fragment_detail_random"
         tools:layout="@layout/fragment_detail_random" >
         <argument
