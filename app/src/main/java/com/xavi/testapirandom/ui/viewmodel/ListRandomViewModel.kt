@@ -8,10 +8,10 @@ import com.xavi.testapirandom.data.model.RandomModel
 import com.xavi.testapirandom.domain.GetRandomUsersCase
 import kotlinx.coroutines.launch
 
-class ListRandomViewModel: ViewModel() {
+class ListRandomViewModel : ViewModel() {
     private var getRandomUsers = GetRandomUsersCase()
-    private val listRandomUsers = MutableLiveData<RandomModel?>()
-    fun getListRandomUsers(): LiveData<RandomModel?> = listRandomUsers
+    private val listRandomUsers = MutableLiveData<Result<RandomModel?>?>()
+    fun getListRandomUsers(): LiveData<Result<RandomModel?>?> = listRandomUsers
 
     fun onCreate(page: String) {
         viewModelScope.launch {

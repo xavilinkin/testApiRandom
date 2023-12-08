@@ -6,7 +6,7 @@ import com.xavi.testapirandom.data.network.RandomService
 class RandomRepository {
     private val api = RandomService()
 
-    suspend fun getRandomUsers(page: String): RandomModel? {
+    suspend fun getRandomUsers(page: String): Result<RandomModel?> {
         return api.getRandomUsers(page)
     }
 }

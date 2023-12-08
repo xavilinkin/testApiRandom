@@ -13,12 +13,12 @@ import com.xavi.testapirandom.ui.viewmodel.ListRandomViewModel
 class ListRandomFragment : Fragment() {
     private var _binding: FragmentListRandomBinding? = null
     private val binding get() = _binding!!
-
     private val lisRandomViewModel: ListRandomViewModel by viewModels()
+    private val page = "1"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lisRandomViewModel.onCreate("1")
+        lisRandomViewModel.onCreate(page)
     }
 
     override fun onCreateView(
@@ -33,7 +33,8 @@ class ListRandomFragment : Fragment() {
 
     private fun testClick(binding: FragmentListRandomBinding) {
         binding.test1.setOnClickListener {
-            val passArgs = ListRandomFragmentDirections.actionListRandomFragmentToDetailRandomFragment("Hola")
+            val passArgs =
+                ListRandomFragmentDirections.actionListRandomFragmentToDetailRandomFragment("Hola")
             findNavController().navigate(passArgs)
         }
     }
@@ -43,12 +44,16 @@ class ListRandomFragment : Fragment() {
             viewLifecycleOwner
         ) { result ->
             result?.let { usersResult ->
-                val names = buildString {
-                    usersResult.results?.forEach { user ->
-                        append(user.name.first)
+                if (usersResult.isSuccess) {
+                    val names = buildString {
+                        usersResult.getOrNull()?.results?.forEach { user ->
+                            append(user.name.first)
+                        }
                     }
+                    binding.test1.text = names
+                } else {
+                    binding.test1.text = "Ha ocurrido un error"
                 }
-                binding.test1.text = names
             }
         }
     }

@@ -6,7 +6,7 @@ import com.xavi.testapirandom.data.model.RandomModel
 class GetRandomUsersCase {
     private val repository = RandomRepository()
 
-    suspend operator fun invoke(page: String): RandomModel? {
+    suspend operator fun invoke(page: String): Result<RandomModel?> {
         return repository.getRandomUsers(page)
     }
 }
