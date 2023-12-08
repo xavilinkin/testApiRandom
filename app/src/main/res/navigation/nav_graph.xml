@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listRandomFragment">
+
+    <fragment
+        android:id="@+id/listRandomFragment"
+        android:name="com.xavi.testapirandom.ListRandomFragment"
+        android:label="fragment_list_random"
+        tools:layout="@layout/fragment_list_random" >
+        <action
+            android:id="@+id/action_listRandomFragment_to_detailRandomFragment"
+            app:destination="@id/detailRandomFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailRandomFragment"
+        android:name="com.xavi.testapirandom.DetailRandomFragment"
+        android:label="fragment_detail_random"
+        tools:layout="@layout/fragment_detail_random" />
+</navigation>
