@@ -14,9 +14,16 @@
             android:id="@+id/action_listRandomFragment_to_detailRandomFragment"
             app:destination="@id/detailRandomFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/detailRandomFragment"
         android:name="com.xavi.testapirandom.DetailRandomFragment"
         android:label="fragment_detail_random"
-        tools:layout="@layout/fragment_detail_random" />
+        tools:layout="@layout/fragment_detail_random" >
+        <argument
+            android:name="info_user"
+            android:defaultValue="0"
+            app:argType="string" />
+    </fragment>
+
 </navigation>
