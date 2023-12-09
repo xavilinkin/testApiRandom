@@ -12,7 +12,7 @@ import com.xavi.testapirandom.ui.view.fragments.listener.OnClickListUserListener
 import com.xavi.testapirandom.utils.CircleTransform
 
 class ListAdapter(
-    private val listSearch: MutableList<Result>,
+    val listSearch: MutableList<Result>,
     private var listener: OnClickListUserListener
 ) :
     RecyclerView.Adapter<ListAdapter.ListUsersHolder>() {

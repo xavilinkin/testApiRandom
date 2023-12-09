@@ -20,8 +20,7 @@ class ListRandomFragment : Fragment() {
     private val lisRandomViewModel: ListRandomViewModel by viewModels()
     private var page = 1
     private lateinit var listener: OnClickListUserListener
-    private var saveList: MutableList<Result>? = mutableListOf()
-    private var getList: MutableList<Result> = mutableListOf()
+    private var isGoTo: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,13 +73,13 @@ class ListRandomFragment : Fragment() {
             list as MutableList
             configureRecyclerView(list)
         } else {
-            if (saveList?.isEmpty() == true) {
-                configureRecyclerView(getList)
+            if (isGoTo) {
+                adapterList?.listSearch?.let { configureRecyclerView(it) }
+                isGoTo = false
             } else {
                 adapterList?.addAll(list)
             }
         }
-        saveList?.addAll(list as MutableList<Result>)
         isLoading = true
         binding.loadingListProgressBar.visibility = View.GONE
     }
@@ -97,10 +96,7 @@ class ListRandomFragment : Fragment() {
                 val passArgs =
                     ListRandomFragmentDirections.actionListRandomFragmentToDetailRandomFragment(user)
                 findNavController().navigate(passArgs)
-                // TODO David aplicar en otro lugar
-                // saveList = saveList?.distinctBy { it.picture.thumbnail } as MutableList<Result>?
-                saveList?.let { getList.addAll(it) }
-                saveList = mutableListOf()
+                isGoTo = true
             }
         }
     }
