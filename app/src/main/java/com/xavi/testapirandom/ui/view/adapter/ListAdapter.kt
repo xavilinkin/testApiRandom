@@ -12,11 +12,17 @@ import com.xavi.testapirandom.ui.view.fragments.listener.OnClickListUserListener
 import com.xavi.testapirandom.utils.CircleTransform
 
 class ListAdapter(
-    private val listSearch: List<Result>,
+    private val listSearch: MutableList<Result>,
     private var listener: OnClickListUserListener
 ) :
     RecyclerView.Adapter<ListAdapter.ListUsersHolder>() {
     private lateinit var binding: ItemUserBinding
+
+    fun addAll(newList: List<Result>?) {
+        val startPosition = listSearch.size
+        newList?.let { listSearch.addAll(it) }
+        newList?.let { it?.size?.let { it1 -> notifyItemRangeInserted(startPosition, it1) } }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListUsersHolder {
         binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)

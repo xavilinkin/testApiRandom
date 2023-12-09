@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.xavi.testapirandom.databinding.FragmentDetailRandomBinding
 
@@ -23,6 +24,9 @@ class DetailRandomFragment : Fragment() {
     ): View? {
         _binding = FragmentDetailRandomBinding.inflate(inflater, container, false)
         binding.test2.text = args.RandomModel.name.first
+        binding.test2.setOnClickListener {
+            parentFragment?.findNavController()?.popBackStack()
+        }
         return binding.root
     }
 

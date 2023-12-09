@@ -18,13 +18,14 @@ class ListRandomFragment : Fragment() {
     private var _binding: FragmentListRandomBinding? = null
     private val binding get() = _binding!!
     private val lisRandomViewModel: ListRandomViewModel by viewModels()
-    private val page = "1"
-    private var adapterList: ListAdapter? = null
+    private var page = 1
     private lateinit var listener: OnClickListUserListener
+    private var saveList: MutableList<Result>? = mutableListOf()
+    private var getList: MutableList<Result> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lisRandomViewModel.onCreate(page)
+        lisRandomViewModel.onCreate(page.toString())
     }
 
     override fun onCreateView(
@@ -36,6 +37,9 @@ class ListRandomFragment : Fragment() {
         setListener()
         return binding.root
     }
+    private var adapterList: ListAdapter? = null
+    private var isLoading = true
+
     private fun loadRandomSearch() {
         lisRandomViewModel.getListRandomUsers().observe(
             viewLifecycleOwner
@@ -44,7 +48,17 @@ class ListRandomFragment : Fragment() {
                 if (usersResult.isSuccess) {
                     val listResult = usersResult.getOrNull()?.results
                     initRecyclerView(listResult)
-                    adapterList?.notifyDataSetChanged()
+
+                    binding.listScroll.viewTreeObserver.addOnScrollChangedListener {
+                        val scrollView = binding.listScroll
+                        val bottomReached = scrollView.scrollY + scrollView.height >= scrollView.getChildAt(0).height
+
+                        if (bottomReached && isLoading) {
+                            isLoading = false
+                            page++
+                            lisRandomViewModel.onCreate(page.toString())
+                        }
+                    }
                 } else {
                     // "Ha ocurrido un error"
                 }
@@ -53,10 +67,27 @@ class ListRandomFragment : Fragment() {
     }
 
     private fun initRecyclerView(list: List<Result>?) {
-        adapterList = list?.let { ListAdapter(it, listener) }
-        binding.listRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.listRecyclerView.adapter = adapterList
+        if (adapterList == null) {
+            list as MutableList
+            adapterList = list?.let { ListAdapter(it, listener) }
+            binding.listRecyclerView.layoutManager = LinearLayoutManager(context)
+            binding.listRecyclerView.adapter = adapterList
+            adapterList?.notifyDataSetChanged()
+        } else {
+            if (saveList?.isEmpty() == true) {
+                getList
+                adapterList = ListAdapter(getList, listener)
+                binding.listRecyclerView.layoutManager = LinearLayoutManager(context)
+                binding.listRecyclerView.adapter = adapterList
+                adapterList?.notifyDataSetChanged()
+            } else {
+                adapterList?.addAll(list)
+            }
+        }
+        saveList?.addAll(list as MutableList<Result>)
+        isLoading = true
     }
+
 
     private fun setListener() {
         listener = object : OnClickListUserListener {
@@ -64,6 +95,8 @@ class ListRandomFragment : Fragment() {
                 val passArgs =
                     ListRandomFragmentDirections.actionListRandomFragmentToDetailRandomFragment(user)
                 findNavController().navigate(passArgs)
+                saveList?.let { getList.addAll(it) }
+                saveList = mutableListOf()
             }
         }
     }
