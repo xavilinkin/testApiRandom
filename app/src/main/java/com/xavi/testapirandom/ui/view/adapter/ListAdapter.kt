@@ -21,7 +21,7 @@ class ListAdapter(
     fun addAll(newList: List<Result>?) {
         val startPosition = listSearch.size
         newList?.let { listSearch.addAll(it) }
-        newList?.let { it?.size?.let { it1 -> notifyItemRangeInserted(startPosition, it1) } }
+        newList?.let { notifyItemRangeInserted(startPosition, it.size) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListUsersHolder {
@@ -47,7 +47,7 @@ class ListAdapter(
             binding.cellUserConstraint.setOnClickListener {
                 var user = itemUser
 
-                // TODO study this case
+                // TODO In the service, this field may come with an incorrect type.
                 if (itemUser.id.value == null){
                     user = itemUser.copy(id = Id("null", "null"))
                 }

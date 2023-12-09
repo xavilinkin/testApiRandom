@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Test Api Random</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="name_detail_fragment">Nombre y apellidos</string>
+    <string name="email_detail_fragment">Email</string>
+    <string name="gender_detail_fragment">Género</string>
+    <string name="date_detail_fragment">Fecha de Registro</string>
+    <string name="phone_detail_fragment">Teléfono</string>
+    <string name="gender_female_detail_fragment">female</string>
+    <string name="gender_male_detail_fragment">male</string>
+    <string name="genero_femenino_detail_fragment">Femenino</string>
+    <string name="genero_masculino_detail_fragment">Masculino</string>
+    <string name="gender_other_detail_fragment">Otro</string>
 </resources>

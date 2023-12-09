@@ -7,8 +7,9 @@ import java.util.Locale
 
 class TransformDate {
     companion object {
+        const val FORMAT_DDMMYYYY = "dd/MM/yyyy"
         fun transformDate(inputDateString: String, outputDateFormat: String): String {
-            try {
+            return try {
                 val inputFormat =
                     SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
                 val outputFormat = SimpleDateFormat(outputDateFormat, Locale.getDefault())
@@ -17,10 +18,10 @@ class TransformDate {
                     "Error parsing date",
                     0
                 )
-                return outputFormat.format(date)
+                outputFormat.format(date)
             } catch (e: ParseException) {
                 e.printStackTrace()
-                return ""
+                ""
             }
         }
     }
