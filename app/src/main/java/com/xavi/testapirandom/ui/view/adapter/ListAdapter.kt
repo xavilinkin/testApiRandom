@@ -5,13 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import com.xavi.testapirandom.data.model.Id
 import com.xavi.testapirandom.data.model.Result
 import com.xavi.testapirandom.databinding.ItemUserBinding
+import com.xavi.testapirandom.ui.view.fragments.listener.OnClickListUserListener
 import com.xavi.testapirandom.utils.CircleTransform
 
 class ListAdapter(
-    private val listSearch: List<Result>
-    // private var listener: OnClickListFlickrListener
+    private val listSearch: List<Result>,
+    private var listener: OnClickListUserListener
 ) :
     RecyclerView.Adapter<ListAdapter.ListUsersHolder>() {
     private lateinit var binding: ItemUserBinding
@@ -36,6 +38,15 @@ class ListAdapter(
             binding.mailTextView.text = itemUser.email
             Picasso.get().load(itemUser.picture.thumbnail).transform(CircleTransform())
                 .into(binding.imageImageView)
+            binding.cellUserConstraint.setOnClickListener {
+                var user = itemUser
+
+                // TODO study this case
+                if (itemUser.id.value == null){
+                    user = itemUser.copy(id = Id("null", "null"))
+                }
+                listener.goToUser(user)
+            }
         }
     }
 }
