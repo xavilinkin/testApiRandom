@@ -48,22 +48,25 @@ class ListRandomFragment : Fragment() {
                 if (usersResult.isSuccess) {
                     val listResult = usersResult.getOrNull()?.results
                     initRecyclerView(listResult)
-
-                    binding.listScroll.viewTreeObserver.addOnScrollChangedListener {
-                        val scrollView = binding.listScroll
-                        val bottomReached =
-                            scrollView.scrollY + scrollView.height >= scrollView.getChildAt(0).height
-
-                        if (bottomReached && isLoading) {
-                            binding.loadingListProgressBar.visibility = View.VISIBLE
-                            isLoading = false
-                            page++
-                            lisRandomViewModel.onCreate(page.toString())
-                        }
-                    }
+                    configureScroll()
                 } else {
                     // "Ha ocurrido un error"
                 }
+            }
+        }
+    }
+
+    private fun configureScroll() {
+        binding.listScroll.viewTreeObserver.addOnScrollChangedListener {
+            val scrollView = binding.listScroll
+            val bottomReached =
+                scrollView.scrollY + scrollView.height >= scrollView.getChildAt(0).height
+
+            if (bottomReached && isLoading) {
+                binding.loadingListProgressBar.visibility = View.VISIBLE
+                isLoading = false
+                page++
+                lisRandomViewModel.onCreate(page.toString())
             }
         }
     }
