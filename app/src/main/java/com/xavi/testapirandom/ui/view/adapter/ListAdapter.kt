@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import com.xavi.testapirandom.data.model.Result
 import com.xavi.testapirandom.databinding.ItemUserBinding
+import com.xavi.testapirandom.utils.CircleTransform
 
 class ListAdapter(
     private val listSearch: List<Result>
@@ -32,6 +34,8 @@ class ListAdapter(
             val last = itemUser.name.last
             binding.nameTextView.text = "$name $last"
             binding.mailTextView.text = itemUser.email
+            Picasso.get().load(itemUser.picture.thumbnail).transform(CircleTransform())
+                .into(binding.imageImageView)
         }
     }
 }
