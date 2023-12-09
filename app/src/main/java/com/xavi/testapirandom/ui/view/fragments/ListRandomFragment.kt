@@ -37,6 +37,7 @@ class ListRandomFragment : Fragment() {
         setListener()
         return binding.root
     }
+
     private var adapterList: ListAdapter? = null
     private var isLoading = true
 
@@ -51,9 +52,11 @@ class ListRandomFragment : Fragment() {
 
                     binding.listScroll.viewTreeObserver.addOnScrollChangedListener {
                         val scrollView = binding.listScroll
-                        val bottomReached = scrollView.scrollY + scrollView.height >= scrollView.getChildAt(0).height
+                        val bottomReached =
+                            scrollView.scrollY + scrollView.height >= scrollView.getChildAt(0).height
 
                         if (bottomReached && isLoading) {
+                            binding.loadingListProgressBar.visibility = View.VISIBLE
                             isLoading = false
                             page++
                             lisRandomViewModel.onCreate(page.toString())
@@ -69,25 +72,24 @@ class ListRandomFragment : Fragment() {
     private fun initRecyclerView(list: List<Result>?) {
         if (adapterList == null) {
             list as MutableList
-            adapterList = list?.let { ListAdapter(it, listener) }
-            binding.listRecyclerView.layoutManager = LinearLayoutManager(context)
-            binding.listRecyclerView.adapter = adapterList
-            adapterList?.notifyDataSetChanged()
+            configureRecyclerView(list)
         } else {
             if (saveList?.isEmpty() == true) {
-                getList
-                adapterList = ListAdapter(getList, listener)
-                binding.listRecyclerView.layoutManager = LinearLayoutManager(context)
-                binding.listRecyclerView.adapter = adapterList
-                adapterList?.notifyDataSetChanged()
+                configureRecyclerView(getList)
             } else {
                 adapterList?.addAll(list)
             }
         }
         saveList?.addAll(list as MutableList<Result>)
         isLoading = true
+        binding.loadingListProgressBar.visibility = View.GONE
     }
 
+    private fun configureRecyclerView(list: MutableList<Result>) {
+        adapterList = ListAdapter(list, listener)
+        binding.listRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.listRecyclerView.adapter = adapterList
+    }
 
     private fun setListener() {
         listener = object : OnClickListUserListener {
@@ -95,6 +97,8 @@ class ListRandomFragment : Fragment() {
                 val passArgs =
                     ListRandomFragmentDirections.actionListRandomFragmentToDetailRandomFragment(user)
                 findNavController().navigate(passArgs)
+                // TODO David aplicar en otro lugar
+                // saveList = saveList?.distinctBy { it.picture.thumbnail } as MutableList<Result>?
                 saveList?.let { getList.addAll(it) }
                 saveList = mutableListOf()
             }
