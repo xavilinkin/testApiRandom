@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.xavi.testapirandom.data.model.Result
 import com.xavi.testapirandom.databinding.FragmentListRandomBinding
+import com.xavi.testapirandom.ui.view.adapter.ListAdapter
 import com.xavi.testapirandom.ui.viewmodel.ListRandomViewModel
 
 class ListRandomFragment : Fragment() {
@@ -16,6 +17,7 @@ class ListRandomFragment : Fragment() {
     private val binding get() = _binding!!
     private val lisRandomViewModel: ListRandomViewModel by viewModels()
     private val page = "1"
+    private var adapterList: ListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +29,32 @@ class ListRandomFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentListRandomBinding.inflate(inflater, container, false)
-        testGetRandomUsers()
+        loadRandomSearch()
         return binding.root
     }
+    private fun loadRandomSearch() {
+        lisRandomViewModel.getListRandomUsers().observe(
+            viewLifecycleOwner
+        ) { result ->
+            result?.let { usersResult ->
+                if (usersResult.isSuccess) {
+                    // Esta lista pasará al recycler
+                    val listResult = usersResult.getOrNull()?.results
+                    initRecyclerView(listResult)
+                    adapterList?.notifyDataSetChanged()
+                } else {
+                    // "Ha ocurrido un error"
+                }
+            }
+        }
+    }
 
+    private fun initRecyclerView(list: List<Result>?) {
+        adapterList = list?.let { ListAdapter(it) }
+        binding.listRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.listRecyclerView.adapter = adapterList
+    }
+/**
     private fun testClick(result: Result) {
         binding.test1.setOnClickListener {
             val passArgs =
@@ -59,7 +83,7 @@ class ListRandomFragment : Fragment() {
                 }
             }
         }
-    }
+    } */
 
     override fun onDestroy() {
         super.onDestroy()
