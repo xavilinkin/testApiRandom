@@ -22,7 +22,7 @@ class DetailRandomFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentDetailRandomBinding.inflate(inflater, container, false)
-        binding.test2.text = args.infoUser
+        binding.test2.text = args.RandomModel.name.first
         return binding.root
     }
 

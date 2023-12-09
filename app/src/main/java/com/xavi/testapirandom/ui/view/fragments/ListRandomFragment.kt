@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.xavi.testapirandom.data.model.Result
 import com.xavi.testapirandom.databinding.FragmentListRandomBinding
 import com.xavi.testapirandom.ui.viewmodel.ListRandomViewModel
 
@@ -26,15 +27,14 @@ class ListRandomFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentListRandomBinding.inflate(inflater, container, false)
-        testClick(binding)
         testGetRandomUsers()
         return binding.root
     }
 
-    private fun testClick(binding: FragmentListRandomBinding) {
+    private fun testClick(result: Result) {
         binding.test1.setOnClickListener {
             val passArgs =
-                ListRandomFragmentDirections.actionListRandomFragmentToDetailRandomFragment("Hola")
+                ListRandomFragmentDirections.actionListRandomFragmentToDetailRandomFragment(result)
             findNavController().navigate(passArgs)
         }
     }
@@ -43,14 +43,17 @@ class ListRandomFragment : Fragment() {
         lisRandomViewModel.getListRandomUsers().observe(
             viewLifecycleOwner
         ) { result ->
+            var result1: Result? = null
             result?.let { usersResult ->
                 if (usersResult.isSuccess) {
                     val names = buildString {
                         usersResult.getOrNull()?.results?.forEach { user ->
                             append(user.name.first)
+                            result1 = user
                         }
                     }
                     binding.test1.text = names
+                    testClick(result1!!)
                 } else {
                     binding.test1.text = "Ha ocurrido un error"
                 }

@@ -21,9 +21,8 @@
         android:label="fragment_detail_random"
         tools:layout="@layout/fragment_detail_random" >
         <argument
-            android:name="info_user"
-            android:defaultValue="0"
-            app:argType="string" />
+            android:name="RandomModel"
+            app:argType="com.xavi.testapirandom.data.model.Result" />
     </fragment>
 
 </navigation>
