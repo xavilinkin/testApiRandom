@@ -10,10 +10,10 @@ import com.xavi.testapirandom.domain.GetRandomUsersCase
 import kotlinx.coroutines.launch
 
 class ListRandomViewModel : ViewModel() {
-    private var getRandomUsers = GetRandomUsersCase()
+    private val getRandomUsers = GetRandomUsersCase()
     private val listRandomUsers = MutableLiveData<Result<RandomModel?>?>()
-    private var listSearchMLiveData = MutableLiveData<MutableList<ResultUser>>()
-    private var listSearch = mutableListOf<ResultUser>()
+    private val listSearchMLiveData = MutableLiveData<MutableList<ResultUser>>()
+    private val listSearch = mutableListOf<ResultUser>()
     fun getListRandomUsers(): LiveData<Result<RandomModel?>?> = listRandomUsers
     fun getListSearchLiveData(): LiveData<MutableList<ResultUser>> = listSearchMLiveData
 

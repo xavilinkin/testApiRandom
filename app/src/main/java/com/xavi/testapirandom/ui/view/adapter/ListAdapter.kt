@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import com.xavi.testapirandom.data.model.Id
 import com.xavi.testapirandom.data.model.ResultUser
 import com.xavi.testapirandom.databinding.ItemUserBinding
 import com.xavi.testapirandom.ui.view.fragments.listener.OnClickListUserListener
