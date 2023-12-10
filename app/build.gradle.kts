@@ -90,4 +90,7 @@ dependencies {
 
     // Maps
     implementation("com.google.android.gms:play-services-maps:17.0.1")
+
+    // MOCKK
+    testImplementation("io.mockk:mockk:1.12.0")
 }

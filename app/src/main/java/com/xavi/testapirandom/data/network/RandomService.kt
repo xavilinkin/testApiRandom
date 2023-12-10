@@ -4,7 +4,6 @@ import com.xavi.testapirandom.core.RetrofitHelper
 import com.xavi.testapirandom.data.model.RandomModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.lang.Error
 
 class RandomService {
     private val retrofit = RetrofitHelper.getRetrofit()
