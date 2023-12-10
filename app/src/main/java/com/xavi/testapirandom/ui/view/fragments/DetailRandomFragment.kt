@@ -51,8 +51,14 @@ class DetailRandomFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
-        val location = LatLng(37.7749, -122.4194)
-        googleMap?.addMarker(MarkerOptions().position(location).title("Marker in San Francisco"))
+        val location = LatLng(
+            args.RandomModel.location.coordinates.latitude.toDouble(),
+            args.RandomModel.location.coordinates.longitude.toDouble()
+        )
+        googleMap?.addMarker(
+            MarkerOptions().position(location)
+                .title(context?.getString(R.string.address_map_detail_fragment))
+        )
         googleMap?.moveCamera(CameraUpdateFactory.newLatLng(location))
     }
 
