@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.fragments.DetailRandomFragment">
+    tools:context=".ui.view.fragments.DetailRandomFragment"
+    android:id="@+id/detailFrameLayout">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/detailToolbar"
@@ -240,8 +241,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/genderDetailConstraint"
-                tools:ignore="DuplicateIds">
+                app:layout_constraintTop_toBottomOf="@+id/genderDetailConstraint">
 
                 <ImageView
                     android:id="@+id/dateImageView"
@@ -288,8 +288,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dateDetailConstraint"
-                tools:ignore="DuplicateIds">
+                app:layout_constraintTop_toBottomOf="@+id/dateDetailConstraint">
 
                 <ImageView
                     android:id="@+id/phoneImageView"
@@ -328,6 +327,55 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/phoneImageView"
                     app:layout_constraintTop_toBottomOf="@+id/phoneDetailTextView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/addressDetailConstraint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/phoneDetailConstraint">
+
+                <ImageView
+                    android:id="@+id/addressImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@color/teal_200"
+                    android:padding="16dp"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/addressDetailTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    app:layout_constraintBottom_toTopOf="@+id/addressMapDetailTextName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/addressImageView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Address" />
+
+                <View
+                    android:id="@+id/addressMapDetailTextName"
+                    android:layout_width="0dp"
+                    android:layout_height="300dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@color/purple_200"
+                    android:inputType="none"
+                    android:padding="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/addressImageView"
+                    app:layout_constraintTop_toBottomOf="@+id/addressDetailTextView" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

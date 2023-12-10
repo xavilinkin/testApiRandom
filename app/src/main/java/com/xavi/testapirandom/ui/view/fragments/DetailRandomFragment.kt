@@ -30,6 +30,7 @@ class DetailRandomFragment : Fragment() {
         setUserImage()
         configureToolbar()
         configureText()
+        controlToolbar()
         return binding.root
     }
 
@@ -73,6 +74,22 @@ class DetailRandomFragment : Fragment() {
         // Phone
         binding.phoneDetailTextView.text = context?.getText(R.string.phone_detail_fragment)
         binding.editPhoneDetailTextName.text = addEditable(args.RandomModel.phone)
+
+        // Address
+        binding.addressDetailTextView.text = context?.getText(R.string.address_detail_fragment)
+    }
+
+    private fun controlToolbar() {
+        val toolbar = binding.detailToolbar
+        val nestedScrollView = binding.detailScroll
+
+        nestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+            if (scrollY != 0) {
+                toolbar.setBackgroundColor(resources.getColor(R.color.white, null))
+            } else {
+                toolbar.setBackgroundColor(resources.getColor(R.color.transparent, null))
+            }
+        }
     }
 
     private fun configureGender(): Editable {
