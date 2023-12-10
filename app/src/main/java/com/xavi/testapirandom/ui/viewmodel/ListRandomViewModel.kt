@@ -21,9 +21,11 @@ class ListRandomViewModel : ViewModel() {
         viewModelScope.launch {
             listRandomUsers.postValue(getRandomUsers(page))
             getRandomUsers(page).getOrNull()
-                ?.let { it.results.let { it1 -> listSearch.addAll(it1) } }
-            val filterList = listSearch.distinct().toMutableList()
-            listSearchMLiveData.postValue(filterList)
+                ?.let {
+                    it.results.let { it1 -> listSearch.addAll(it1) }
+                    val filterList = listSearch.distinct().toMutableList()
+                    listSearchMLiveData.postValue(filterList)
+                }
         }
     }
 }

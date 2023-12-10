@@ -12,4 +12,5 @@
     <string name="genero_femenino_detail_fragment">Femenino</string>
     <string name="genero_masculino_detail_fragment">Masculino</string>
     <string name="gender_other_detail_fragment">Otro</string>
+    <string name="error_list_fragment">Error. Haz scroll para recargar</string>
 </resources>

@@ -11,6 +11,7 @@ import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.xavi.testapirandom.R
 import com.xavi.testapirandom.data.model.ResultUser
 import com.xavi.testapirandom.databinding.FragmentListRandomBinding
 import com.xavi.testapirandom.ui.view.adapter.ListAdapter
@@ -40,6 +41,7 @@ class ListRandomFragment : Fragment() {
         loadRandomSearch()
         setListener()
         configureScroll()
+        configureError()
         return binding.root
     }
 
@@ -55,7 +57,8 @@ class ListRandomFragment : Fragment() {
                 if (usersResult.isSuccess) {
                     getRandomList()
                 } else {
-                    // "Ha ocurrido un error"
+                    statusProgressbar(false)
+                    statusError(true)
                 }
             }
         }
@@ -77,6 +80,7 @@ class ListRandomFragment : Fragment() {
                     scrollView.scrollY + scrollView.height >= scrollView.getChildAt(0).height
 
                 if (bottomReached && isLoading && binding.loadingListProgressBar.isGone) {
+                    statusError(false)
                     statusProgressbar(true)
                     isLoading = false
                     page++
@@ -115,6 +119,14 @@ class ListRandomFragment : Fragment() {
 
     private fun statusProgressbar(show: Boolean) {
         binding.loadingListProgressBar.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    private fun statusError(show: Boolean){
+        binding.errorListTextView.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    private fun configureError() {
+        binding.errorListTextView.text = context?.getText(R.string.error_list_fragment)
     }
 
     override fun onDestroy() {

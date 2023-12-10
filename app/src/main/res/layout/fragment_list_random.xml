@@ -28,16 +28,33 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="50dp"/>
 
                 <ProgressBar
                     android:id="@+id/loadingListProgressBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="50dp"
                     android:foregroundGravity="center_vertical"
                     android:layout_below="@+id/listRecyclerView"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/errorListTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:foregroundGravity="center_vertical"
+                    android:layout_below="@+id/listRecyclerView"
+                    android:textSize="30dp"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:textColor="@android:color/holo_red_dark"
+                    tools:text="Error. Haz scroll para recargar"
                     android:visibility="gone" />
             </RelativeLayout>
 
