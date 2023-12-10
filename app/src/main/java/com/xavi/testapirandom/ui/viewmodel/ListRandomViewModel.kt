@@ -22,7 +22,8 @@ class ListRandomViewModel : ViewModel() {
             listRandomUsers.postValue(getRandomUsers(page))
             getRandomUsers(page).getOrNull()
                 ?.let { it.results.let { it1 -> listSearch.addAll(it1) } }
-            listSearchMLiveData.postValue(listSearch)
+            val filterList = listSearch.distinct().toMutableList()
+            listSearchMLiveData.postValue(filterList)
         }
     }
 }

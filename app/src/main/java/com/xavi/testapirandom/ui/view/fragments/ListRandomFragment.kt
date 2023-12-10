@@ -8,11 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.xavi.testapirandom.data.model.RandomModel
 import com.xavi.testapirandom.data.model.ResultUser
 import com.xavi.testapirandom.databinding.FragmentListRandomBinding
 import com.xavi.testapirandom.ui.view.adapter.ListAdapter
@@ -49,7 +47,7 @@ class ListRandomFragment : Fragment() {
     private var isLoading = true
 
     private fun loadRandomSearch() {
-        binding.loadingListProgressBar.visibility = View.VISIBLE
+        statusProgressbar(true)
         lisRandomViewModel.getListRandomUsers().observe(
             viewLifecycleOwner
         ) { result ->
@@ -79,7 +77,7 @@ class ListRandomFragment : Fragment() {
                     scrollView.scrollY + scrollView.height >= scrollView.getChildAt(0).height
 
                 if (bottomReached && isLoading && binding.loadingListProgressBar.isGone) {
-                    binding.loadingListProgressBar.visibility = View.VISIBLE
+                    statusProgressbar(true)
                     isLoading = false
                     page++
 
@@ -95,7 +93,7 @@ class ListRandomFragment : Fragment() {
     private fun initRecyclerView(list: List<ResultUser>?) {
         list as MutableList
         configureRecyclerView(list)
-        binding.loadingListProgressBar.visibility = View.GONE
+        statusProgressbar(false)
     }
 
     private fun configureRecyclerView(list: MutableList<ResultUser>) {
@@ -113,6 +111,10 @@ class ListRandomFragment : Fragment() {
                 findNavController().navigate(passArgs)
             }
         }
+    }
+
+    private fun statusProgressbar(show: Boolean) {
+        binding.loadingListProgressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     override fun onDestroy() {

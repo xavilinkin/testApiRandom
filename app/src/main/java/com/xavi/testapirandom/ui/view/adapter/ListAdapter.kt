@@ -12,17 +12,11 @@ import com.xavi.testapirandom.ui.view.fragments.listener.OnClickListUserListener
 import com.xavi.testapirandom.utils.CircleTransform
 
 class ListAdapter(
-    val listSearch: MutableList<ResultUser>,
+    private val listSearch: MutableList<ResultUser>,
     private var listener: OnClickListUserListener
 ) :
     RecyclerView.Adapter<ListAdapter.ListUsersHolder>() {
     private lateinit var binding: ItemUserBinding
-
-    fun addAll(newList: List<ResultUser>?) {
-        val startPosition = listSearch.size
-        newList?.let { listSearch.addAll(it) }
-        newList?.let { notifyItemRangeInserted(startPosition, it.size) }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListUsersHolder {
         binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -45,13 +39,7 @@ class ListAdapter(
             Picasso.get().load(itemUser.picture.thumbnail).transform(CircleTransform())
                 .into(binding.imageImageView)
             binding.cellUserConstraint.setOnClickListener {
-                var user = itemUser
-
-                // TODO In the service, this field may come with an incorrect type.
-                if (itemUser.id.value == null){
-                    user = itemUser.copy(id = Id("null", "null"))
-                }
-                listener.goToUser(user)
+                listener.goToUser(itemUser)
             }
         }
     }
