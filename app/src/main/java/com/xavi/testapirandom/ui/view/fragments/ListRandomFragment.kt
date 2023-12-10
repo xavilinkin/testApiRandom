@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.xavi.testapirandom.data.model.Result
+import com.xavi.testapirandom.data.model.RandomModel
+import com.xavi.testapirandom.data.model.ResultUser
 import com.xavi.testapirandom.databinding.FragmentListRandomBinding
 import com.xavi.testapirandom.ui.view.adapter.ListAdapter
 import com.xavi.testapirandom.ui.view.fragments.listener.OnClickListUserListener
@@ -20,7 +23,6 @@ class ListRandomFragment : Fragment() {
     private val lisRandomViewModel: ListRandomViewModel by viewModels()
     private var page = 1
     private lateinit var listener: OnClickListUserListener
-    private var isGoTo: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +36,7 @@ class ListRandomFragment : Fragment() {
         _binding = FragmentListRandomBinding.inflate(inflater, container, false)
         loadRandomSearch()
         setListener()
+        configureScroll()
         return binding.root
     }
 
@@ -41,18 +44,25 @@ class ListRandomFragment : Fragment() {
     private var isLoading = true
 
     private fun loadRandomSearch() {
+        binding.loadingListProgressBar.visibility = View.VISIBLE
         lisRandomViewModel.getListRandomUsers().observe(
             viewLifecycleOwner
         ) { result ->
             result?.let { usersResult ->
                 if (usersResult.isSuccess) {
-                    val listResult = usersResult.getOrNull()?.results
-                    initRecyclerView(listResult)
-                    configureScroll()
+                    getRandomList()
                 } else {
                     // "Ha ocurrido un error"
                 }
             }
+        }
+    }
+
+    private fun getRandomList() {
+        lisRandomViewModel.getListSearchLiveData().observe(
+            viewLifecycleOwner
+        ) { listResult ->
+            initRecyclerView(listResult)
         }
     }
 
@@ -62,7 +72,7 @@ class ListRandomFragment : Fragment() {
             val bottomReached =
                 scrollView.scrollY + scrollView.height >= scrollView.getChildAt(0).height
 
-            if (bottomReached && isLoading) {
+            if (bottomReached && isLoading && binding.loadingListProgressBar.isGone) {
                 binding.loadingListProgressBar.visibility = View.VISIBLE
                 isLoading = false
                 page++
@@ -71,35 +81,25 @@ class ListRandomFragment : Fragment() {
         }
     }
 
-    private fun initRecyclerView(list: List<Result>?) {
-        if (adapterList == null) {
-            list as MutableList
-            configureRecyclerView(list)
-        } else {
-            if (isGoTo) {
-                adapterList?.listSearch?.let { configureRecyclerView(it) }
-                isGoTo = false
-            } else {
-                adapterList?.addAll(list)
-            }
-        }
-        isLoading = true
+    private fun initRecyclerView(list: List<ResultUser>?) {
+        list as MutableList
+        configureRecyclerView(list)
         binding.loadingListProgressBar.visibility = View.GONE
     }
 
-    private fun configureRecyclerView(list: MutableList<Result>) {
+    private fun configureRecyclerView(list: MutableList<ResultUser>) {
         adapterList = ListAdapter(list, listener)
         binding.listRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.listRecyclerView.adapter = adapterList
+        isLoading = true
     }
 
     private fun setListener() {
         listener = object : OnClickListUserListener {
-            override fun goToUser(user: Result) {
+            override fun goToUser(user: ResultUser) {
                 val passArgs =
                     ListRandomFragmentDirections.actionListRandomFragmentToDetailRandomFragment(user)
                 findNavController().navigate(passArgs)
-                isGoTo = true
             }
         }
     }

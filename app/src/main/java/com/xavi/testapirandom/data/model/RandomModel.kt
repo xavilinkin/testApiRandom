@@ -5,12 +5,12 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class RandomModel(
-    val results: List<Result>,
+    val results: List<ResultUser>,
     val info: Info
 ) : Parcelable
 
 @Parcelize
-data class Result(
+data class ResultUser(
     val gender: String,
     val name: Name,
     val location: Location,

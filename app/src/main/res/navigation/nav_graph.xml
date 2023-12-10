@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_detail_random" >
         <argument
             android:name="RandomModel"
-            app:argType="com.xavi.testapirandom.data.model.Result" />
+            app:argType="com.xavi.testapirandom.data.model.ResultUser" />
     </fragment>
 
 </navigation>

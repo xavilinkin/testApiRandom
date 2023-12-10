@@ -6,19 +6,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.xavi.testapirandom.data.model.Id
-import com.xavi.testapirandom.data.model.Result
+import com.xavi.testapirandom.data.model.ResultUser
 import com.xavi.testapirandom.databinding.ItemUserBinding
 import com.xavi.testapirandom.ui.view.fragments.listener.OnClickListUserListener
 import com.xavi.testapirandom.utils.CircleTransform
 
 class ListAdapter(
-    val listSearch: MutableList<Result>,
+    val listSearch: MutableList<ResultUser>,
     private var listener: OnClickListUserListener
 ) :
     RecyclerView.Adapter<ListAdapter.ListUsersHolder>() {
     private lateinit var binding: ItemUserBinding
 
-    fun addAll(newList: List<Result>?) {
+    fun addAll(newList: List<ResultUser>?) {
         val startPosition = listSearch.size
         newList?.let { listSearch.addAll(it) }
         newList?.let { notifyItemRangeInserted(startPosition, it.size) }
@@ -37,7 +37,7 @@ class ListAdapter(
     override fun getItemCount(): Int = listSearch.size
 
     inner class ListUsersHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(itemUser: Result) {
+        fun bind(itemUser: ResultUser) {
             val name = itemUser.name.first
             val last = itemUser.name.last
             binding.nameTextView.text = "$name $last"
