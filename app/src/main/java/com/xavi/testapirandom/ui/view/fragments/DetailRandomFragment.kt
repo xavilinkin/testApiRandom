@@ -24,9 +24,6 @@ class DetailRandomFragment : Fragment(), OnMapReadyCallback {
     private val binding get() = _binding!!
     private val args: DetailRandomFragmentArgs by navArgs()
     private var googleMap: GoogleMap? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
