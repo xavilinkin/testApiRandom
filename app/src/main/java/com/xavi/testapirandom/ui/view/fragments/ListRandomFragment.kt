@@ -1,6 +1,8 @@
 package com.xavi.testapirandom.ui.view.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +25,9 @@ class ListRandomFragment : Fragment() {
     private val lisRandomViewModel: ListRandomViewModel by viewModels()
     private var page = 1
     private lateinit var listener: OnClickListUserListener
+
+    private var handler: Handler = Handler(Looper.getMainLooper())
+    private var isScrollEnabled = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,15 +73,21 @@ class ListRandomFragment : Fragment() {
 
     private fun configureScroll() {
         binding.listScroll.viewTreeObserver.addOnScrollChangedListener {
-            val scrollView = binding.listScroll
-            val bottomReached =
-                scrollView.scrollY + scrollView.height >= scrollView.getChildAt(0).height
+            if (isScrollEnabled) {
+                val scrollView = binding.listScroll
+                val bottomReached =
+                    scrollView.scrollY + scrollView.height >= scrollView.getChildAt(0).height
 
-            if (bottomReached && isLoading && binding.loadingListProgressBar.isGone) {
-                binding.loadingListProgressBar.visibility = View.VISIBLE
-                isLoading = false
-                page++
-                lisRandomViewModel.onCreate(page.toString())
+                if (bottomReached && isLoading && binding.loadingListProgressBar.isGone) {
+                    binding.loadingListProgressBar.visibility = View.VISIBLE
+                    isLoading = false
+                    page++
+
+                    isScrollEnabled = false
+                    handler.postDelayed({ isScrollEnabled = true }, 500)
+
+                    lisRandomViewModel.onCreate(page.toString())
+                }
             }
         }
     }
