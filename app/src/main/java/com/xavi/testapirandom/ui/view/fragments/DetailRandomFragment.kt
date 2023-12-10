@@ -8,16 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import com.xavi.testapirandom.R
 import com.xavi.testapirandom.databinding.FragmentDetailRandomBinding
 import com.xavi.testapirandom.utils.CircleTransform
 import com.xavi.testapirandom.utils.TransformDate
 
-class DetailRandomFragment : Fragment() {
+class DetailRandomFragment : Fragment(), OnMapReadyCallback {
     private var _binding: FragmentDetailRandomBinding? = null
     private val binding get() = _binding!!
     private val args: DetailRandomFragmentArgs by navArgs()
+    private var googleMap: GoogleMap? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -32,6 +38,22 @@ class DetailRandomFragment : Fragment() {
         configureText()
         controlToolbar()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val mapView = binding.addressMapDetailTextName
+        mapView.onCreate(savedInstanceState)
+        mapView.getMapAsync(this)
+        mapView.onResume()
+    }
+
+    override fun onMapReady(map: GoogleMap) {
+        googleMap = map
+        val location = LatLng(37.7749, -122.4194)
+        googleMap?.addMarker(MarkerOptions().position(location).title("Marker in San Francisco"))
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLng(location))
     }
 
     private fun setUserImage() {
