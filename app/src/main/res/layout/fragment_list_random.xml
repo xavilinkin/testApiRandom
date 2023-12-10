@@ -3,23 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.view.fragments.ListRandomFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/listSearchView"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/listToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white" />
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="1dp"
+            app:popupTheme="@style/Theme.TestApiRandom">
+
+            <TextView
+                android:id="@+id/listBackButtonTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="normal" />
+        </androidx.appcompat.widget.Toolbar>
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/listScroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/listSearchView">
+            android:layout_below="@+id/listToolbar">
 
             <RelativeLayout
                 android:layout_width="match_parent"

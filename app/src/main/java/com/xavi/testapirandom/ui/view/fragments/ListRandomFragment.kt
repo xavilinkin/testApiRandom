@@ -42,6 +42,7 @@ class ListRandomFragment : Fragment() {
         setListener()
         configureScroll()
         configureError()
+        configureToolbar()
         return binding.root
     }
 
@@ -127,6 +128,13 @@ class ListRandomFragment : Fragment() {
 
     private fun configureError() {
         binding.errorListTextView.text = context?.getText(R.string.error_list_fragment)
+    }
+
+    private fun configureToolbar() {
+        binding.listBackButtonTextView.text = "<"
+        binding.listBackButtonTextView.setOnClickListener {
+            activity?.onBackPressedDispatcher?.onBackPressed()
+        }
     }
 
     override fun onDestroy() {
