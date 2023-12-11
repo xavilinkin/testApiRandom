@@ -1,9 +1,10 @@
 package com.xavi.testapirandom.data.network
 
+import com.xavi.testapirandom.data.RandomRepository
 import com.xavi.testapirandom.data.model.RandomModel
 import com.xavi.testapirandom.data.model.TestData
 import io.mockk.coEvery
-import io.mockk.spyk
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
 import org.junit.Assert.assertEquals
@@ -12,39 +13,44 @@ import retrofit2.Response
 
 class RandomServiceTest {
     @Test
-    fun testGetRandomUsers() = runBlocking {
+    fun testGetRandomUsers() {
         // Given
-        val realRandomService = RandomService()
-        val spyRandomService = spyk(realRandomService)
-        val mockResponse = TestData.createMockRandomModel()
+        val randomRepository = RandomRepository()
 
-        coEvery { spyRandomService.getRandomUsers(any()) } returns Result.success(mockResponse)
+        val apiField = RandomRepository::class.java.getDeclaredField("api")
+        apiField.isAccessible = true
+
+        val randomServiceMock = mockk<RandomService>()
+        val mockResponse = TestData.createMockRandomModel()
+        coEvery { randomServiceMock.getRandomUsers(any()) } returns Result.success(mockResponse)
+
+        apiField.set(randomRepository, randomServiceMock)
 
         // When
-        val result = spyRandomService.getRandomUsers("1")
+        val result = runBlocking { randomRepository.getRandomUsers("1") }
 
         // Then
-        assertEquals("John",
-            result.getOrNull()?.results?.get(0)?.name?.first
-        )
+        assertEquals(Result.success(mockResponse), result)
     }
 
     @Test
     fun testGetRandomUsers_Failure() = runBlocking {
         // Given
-        val realRandomService = RandomService()
-        val spyRandomService = spyk(realRandomService)
+        val randomRepository = RandomRepository()
+
+        val apiField = RandomRepository::class.java.getDeclaredField("api")
+        apiField.isAccessible = true
+
+        val randomServiceMock = mockk<RandomService>()
 
         val errorResponseBody = ResponseBody.create(null, "Error message Test")
         val failureResponse = Response.error<RandomModel>(500, errorResponseBody)
-        coEvery { spyRandomService.getRandomUsers(any()) } returns Result.failure(
-            Exception(
-                failureResponse.toString()
-            )
-        )
+        coEvery { randomServiceMock.getRandomUsers(any()) } returns Result.failure(Exception(failureResponse.toString()))
+
+        apiField.set(randomRepository, randomServiceMock)
 
         // When
-        val result = spyRandomService.getRandomUsers("1")
+        val result = runBlocking { randomRepository.getRandomUsers("1") }
 
         // Then
         assertEquals(
